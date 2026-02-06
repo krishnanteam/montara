@@ -1,0 +1,17 @@
+{
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(npm run build:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npm run preview:*)",
+      "Bash(npm install:*)",
+      "Bash(firebase deploy:*)",
+      "Bash(firebase apps:sdkconfig:*)",
+      "Bash(firebase apps:create:*)",
+      "Bash(firebase auth:import:*)"
+    ]
+  }
+}
