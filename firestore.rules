@@ -1,0 +1,53 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Only authenticated ruthkrishnan.com users can read
+    function isTeamMember() {
+      return request.auth != null &&
+             request.auth.token.email.matches('.*@ruthkrishnan\\.com');
+    }
+
+    // Phase 0: raw_messages is the only user-facing collection
+    match /raw_messages/{doc} {
+      allow read: if isTeamMember();
+      allow write: if false; // Only Cloud Functions (Admin SDK)
+    }
+
+    // Internal: raw events queue (not read by frontend)
+    match /raw_events/{doc} {
+      allow read, write: if false; // Only Cloud Functions (Admin SDK)
+    }
+
+    // Phase 0: processed_events dedup tracking
+    match /processed_events/{doc} {
+      allow read, write: if false;
+    }
+
+    // Phase 1+ collections (placeholder rules)
+    match /properties/{doc} {
+      allow read: if isTeamMember();
+      allow write: if false;
+
+      match /contributions/{contribution} {
+        allow read: if isTeamMember();
+        allow write: if false;
+      }
+    }
+
+    match /agents/{doc} {
+      allow read: if isTeamMember();
+      allow write: if false;
+    }
+
+    match /neighborhoods/{doc} {
+      allow read: if isTeamMember();
+      allow write: if false;
+    }
+
+    match /unmatched_contributions/{doc} {
+      allow read: if isTeamMember();
+      allow write: if false;
+    }
+  }
+}

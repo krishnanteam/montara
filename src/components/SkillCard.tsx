@@ -1,4 +1,5 @@
 import { ArrowRight } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 
 interface SkillCardProps {
   title: string
@@ -10,8 +11,15 @@ interface SkillCardProps {
 }
 
 export function SkillCard({ title, description, url, icon, gradient, category }: SkillCardProps) {
+  const navigate = useNavigate()
+  const isInternal = url.startsWith('/')
+
   const handleClick = () => {
-    window.open(url, '_blank', 'noopener,noreferrer')
+    if (isInternal) {
+      navigate(url)
+    } else {
+      window.open(url, '_blank', 'noopener,noreferrer')
+    }
   }
 
   return (
@@ -46,9 +54,9 @@ export function SkillCard({ title, description, url, icon, gradient, category }:
 
       {/* Action */}
       <div className="mt-4 pt-4 border-t border-white/10 flex items-center justify-between">
-        <span className="text-sm text-slate-500">Launch skill</span>
+        <span className="text-sm text-slate-500">{isInternal ? 'View' : 'Launch skill'}</span>
         <div className="flex items-center gap-2 text-blue-400 group-hover:gap-3 transition-all">
-          <span className="text-sm font-medium">Open</span>
+          <span className="text-sm font-medium">{isInternal ? 'Go' : 'Open'}</span>
           <ArrowRight className="w-4 h-4" />
         </div>
       </div>

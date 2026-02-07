@@ -1,6 +1,8 @@
-import { FileText, Home, LogOut } from 'lucide-react'
+import { FileText, Home, LogOut, MessageSquare } from 'lucide-react'
+import { Routes, Route, Link } from 'react-router-dom'
 import { SkillCard } from './components/SkillCard'
 import { useAuth } from './contexts/AuthContext'
+import { OffMarketFeed } from './pages/offmarket/Feed'
 
 const skills = [
   {
@@ -19,7 +21,33 @@ const skills = [
     gradient: 'from-emerald-500 to-teal-600',
     category: 'Matching',
   },
+  {
+    title: 'OffMarket Intel',
+    description: 'Browse off-market property intel captured from your Slack channel. Search messages, view image transcriptions, and track conversations.',
+    url: '/offmarket',
+    icon: <MessageSquare className="w-6 h-6" />,
+    gradient: 'from-amber-500 to-orange-600',
+    category: 'Intelligence',
+  },
 ]
+
+function SkillsGrid() {
+  return (
+    <main className="max-w-6xl mx-auto px-6 py-16">
+      <div className="flex items-center gap-3 mb-6">
+        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+        <h2 className="text-sm font-medium text-slate-400 uppercase tracking-wider">Skills</h2>
+        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+      </div>
+
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {skills.map((skill) => (
+          <SkillCard key={skill.title} {...skill} />
+        ))}
+      </div>
+    </main>
+  )
+}
 
 function App() {
   const { user, loading, error, signInWithGoogle, logout } = useAuth()
@@ -64,10 +92,10 @@ function App() {
       {/* Header */}
       <header className="border-b border-white/10">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
+          <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <img src="/sg-logo.png" alt="Montara" className="w-8 h-8 rounded-lg" />
             <span className="text-white font-semibold text-lg">Montara</span>
-          </div>
+          </Link>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2 text-sm text-emerald-400">
               <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
@@ -89,32 +117,15 @@ function App() {
         </div>
       </header>
 
-      {/* Skills Section */}
-      <main className="max-w-6xl mx-auto px-6 py-16">
-        <div className="flex items-center gap-3 mb-6">
-          <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-          <h2 className="text-sm font-medium text-slate-400 uppercase tracking-wider">Skills</h2>
-          <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-6">
-          {skills.map((skill) => (
-            <SkillCard key={skill.title} {...skill} />
-          ))}
-        </div>
-
-        {/* Coming Soon Hint */}
-        <div className="mt-8 text-center">
-          <p className="text-slate-500 text-sm">
-            More skills coming soon...
-          </p>
-        </div>
-      </main>
+      <Routes>
+        <Route path="/" element={<SkillsGrid />} />
+        <Route path="/offmarket" element={<OffMarketFeed />} />
+      </Routes>
 
       {/* Footer */}
       <footer className="border-t border-white/10 py-6">
         <div className="max-w-6xl mx-auto px-6 flex items-center justify-between text-sm text-slate-500">
-          <p>© 2025 Montara</p>
+          <p>&copy; 2025 Montara</p>
           <p>Created by Steady Green Labs</p>
         </div>
       </footer>

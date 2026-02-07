@@ -1,0 +1,13 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "raw_messages",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "slackChannelId", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}
